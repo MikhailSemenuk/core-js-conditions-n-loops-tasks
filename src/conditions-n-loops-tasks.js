@@ -21,8 +21,8 @@
  *  0  => true
  *  -5 => false
  */
-function isPositive(/* number */) {
-  throw new Error('Not implemented');
+function isPositive(number) {
+  return number >= 0;
 }
 
 /**
@@ -38,8 +38,12 @@ function isPositive(/* number */) {
  *  -5, 0, 5      => 5
  *  -0.1, 0, 0.2  => 0.2
  */
-function getMaxNumber(/* a, b, c */) {
-  throw new Error('Not implemented');
+function getMaxNumber(a, b, c) {
+  let maxValue = Number.NEGATIVE_INFINITY;
+  maxValue = a > maxValue ? a : maxValue;
+  maxValue = b > maxValue ? b : maxValue;
+  maxValue = c > maxValue ? c : maxValue;
+  return maxValue;
 }
 
 /**
@@ -60,8 +64,12 @@ function getMaxNumber(/* a, b, c */) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  return (
+    queen.x === king.x ||
+    queen.y === king.y ||
+    Math.abs(queen.x - king.x) === Math.abs(queen.y - king.y)
+  );
 }
 
 /**
@@ -82,8 +90,12 @@ function canQueenCaptureKing(/* queen, king */) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  const isExistTriangle = (s1, s2, s3) =>
+    s1 + s2 > s3 && s1 + s3 > s2 && s2 + s3 > s1;
+  const isTriangleIsosceles = (s1, s2, s3) =>
+    s1 === s2 || s2 === s3 || s1 === s3;
+  return isExistTriangle(a, b, c) && isTriangleIsosceles(a, b, c);
 }
 
 /**
@@ -100,8 +112,30 @@ function isIsoscelesTriangle(/* a, b, c */) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  let romanNumerals = '';
+  let currentNum = num;
+  while (currentNum > 0) {
+    if (currentNum >= 10) {
+      romanNumerals += 'X';
+      currentNum -= 10;
+    } else if (currentNum >= 9) {
+      romanNumerals += 'IX';
+      currentNum -= 9;
+    } else if (currentNum >= 5) {
+      romanNumerals += 'V';
+      currentNum -= 5;
+    } else if (currentNum >= 4) {
+      romanNumerals += 'IV';
+      currentNum -= 4;
+    } else if (currentNum >= 1) {
+      romanNumerals += 'I';
+      currentNum -= 1;
+    } else {
+      return romanNumerals;
+    }
+  }
+  return romanNumerals;
 }
 
 /**
