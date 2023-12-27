@@ -330,8 +330,74 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const array2D = new Array(size);
+  for (let index = 0; index < size; index += 1) {
+    array2D[index] = new Array(size);
+  }
+
+  for (let indexY = 0; indexY < size; indexY += 1) {
+    for (let indexX = 0; indexX < size; indexX += 1) {
+      array2D[indexY][indexX] = 0;
+    }
+  }
+
+  const inBorderArray = (arr, coordinate) => {
+    if (
+      coordinate.x < 0 ||
+      coordinate.y < 0 ||
+      coordinate.x >= arr.length ||
+      coordinate.y >= arr.length
+    ) {
+      return false;
+    }
+    if (arr[coordinate.y][coordinate.x] !== 0) {
+      return false;
+    }
+    return true;
+  };
+
+  let currentDirection = 0;
+  const RouteArray = [
+    ['x', '+'],
+    ['y', '+'],
+    ['x', '-'],
+    ['y', '-'],
+  ];
+  const changeDirection = () => {
+    if (currentDirection + 1 > RouteArray.length - 1) {
+      currentDirection = 0;
+    } else {
+      currentDirection += 1;
+    }
+  };
+  const getNewCoordinate = (currentCoordinate) => {
+    const newCoordinate = { ...currentCoordinate };
+    if (RouteArray[currentDirection][1] === '+') {
+      newCoordinate[RouteArray[currentDirection][0]] += 1;
+    } else {
+      newCoordinate[RouteArray[currentDirection][0]] -= 1;
+    }
+    return newCoordinate;
+  };
+
+  let value = 1;
+  let currentCoordinate = { x: 0, y: 0 };
+  for (let index = 0; index < size * size; index += 1) {
+    if (index !== 0) {
+      const newCoordinate = getNewCoordinate(currentCoordinate);
+      if (inBorderArray(array2D, newCoordinate)) {
+        currentCoordinate = { ...newCoordinate };
+      } else {
+        changeDirection();
+        currentCoordinate = getNewCoordinate(currentCoordinate);
+      }
+    }
+
+    array2D[currentCoordinate.y][currentCoordinate.x] = value;
+    value += 1;
+  }
+  return array2D;
 }
 
 /**
@@ -349,8 +415,20 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const newMatrix = new Array(matrix.length);
+  for (let index = 0; index < matrix.length; index += 1) {
+    newMatrix[index] = new Array(matrix.length);
+  }
+
+  for (let index = 0; index < matrix.length; index += 1) {
+    const slice = matrix[index];
+    for (let indexR = 0; indexR < slice.length; indexR += 1) {
+      newMatrix[indexR][matrix.length - 1 - index] = slice[indexR];
+    }
+  }
+
+  return newMatrix;
 }
 
 /**
