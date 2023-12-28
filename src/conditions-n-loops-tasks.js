@@ -489,8 +489,24 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  const shuffleCharOnce = (str2) => {
+    let strEven = '';
+    let strOdd = '';
+    for (let index = 0; index < str2.length; index += 1) {
+      if (index % 2) {
+        strOdd += str2[index];
+      } else {
+        strEven += str2[index];
+      }
+    }
+    return strEven + strOdd;
+  };
+  let answer = str;
+  for (let index = 0; index < iterations; index += 1) {
+    answer = shuffleCharOnce(answer);
+  }
+  return answer;
 }
 
 /**
@@ -510,8 +526,33 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const findIndexMinElement = (arr, startPosition, elementMore) => {
+    let minIndex = 0;
+    let minElement = Number.MAX_SAFE_INTEGER;
+    for (let index = startPosition; index < arr.length; index += 1) {
+      if (arr[index] < minElement && arr[index] > elementMore) {
+        minElement = arr[index];
+        minIndex = index;
+      }
+    }
+    return minIndex;
+  };
+
+  let array = Array.from(`${number}`).map(Number);
+  for (let index = array.length; index > 0; index -= 1) {
+    const currentDigit = array[index];
+    const nextDigit = array[index - 1];
+    if (currentDigit > nextDigit) {
+      const newIndex = findIndexMinElement(array, index - 1, nextDigit);
+      [array[newIndex], array[index - 1]] = [array[index - 1], array[newIndex]];
+      const leftPart = [...array].splice(0, index);
+      const rightPart = [...array].splice(index).sort();
+      array = [...leftPart, ...rightPart];
+      break;
+    }
+  }
+  return Number(array.join(''));
 }
 
 module.exports = {
