@@ -416,6 +416,8 @@ function getSpiralMatrix(size) {
  *  ]                 ]
  */
 function rotateMatrix(matrix) {
+  const lintMatrix = matrix;
+
   const newMatrix = new Array(matrix.length);
   for (let index = 0; index < matrix.length; index += 1) {
     newMatrix[index] = new Array(matrix.length);
@@ -428,7 +430,11 @@ function rotateMatrix(matrix) {
     }
   }
 
-  return newMatrix;
+  for (let indexY = 0; indexY < matrix.length; indexY += 1) {
+    for (let indexX = 0; indexX < matrix.length; indexX += 1) {
+      lintMatrix[indexY][indexX] = newMatrix[indexY][indexX];
+    }
+  }
 }
 
 /**
@@ -445,8 +451,25 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const sortArray = arr;
+  const getIndexMinElement = (array, startPosition) => {
+    let minIndex = -1;
+    let minElement = Number.MAX_SAFE_INTEGER;
+    for (let index = startPosition; index < array.length; index += 1) {
+      const element = array[index];
+      if (element < minElement) {
+        minElement = element;
+        minIndex = index;
+      }
+    }
+    return minIndex;
+  };
+
+  for (let i = 0; i < sortArray.length; i += 1) {
+    const iNew = getIndexMinElement(sortArray, i);
+    [sortArray[i], sortArray[iNew]] = [sortArray[iNew], sortArray[i]];
+  }
 }
 
 /**
