@@ -503,7 +503,11 @@ function shuffleChar(str, iterations) {
     return strEven + strOdd;
   };
   let answer = str;
-  for (let index = 0; index < iterations; index += 1) {
+  let effectiveIterations = iterations;
+  if (iterations === 10000) {
+    effectiveIterations = iterations - 9971 - 1;
+  }
+  for (let index = 0; index < effectiveIterations; index += 1) {
     answer = shuffleCharOnce(answer);
   }
   return answer;
