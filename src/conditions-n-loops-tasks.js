@@ -490,7 +490,12 @@ function sortByAsc(arr) {
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
 function shuffleChar(str, iterations) {
+  const cashShuffle = new Map();
   const shuffleCharOnce = (str2) => {
+    if (cashShuffle.has(str2)) {
+      return cashShuffle.get(str2);
+    }
+
     let strEven = '';
     let strOdd = '';
     for (let index = 0; index < str2.length; index += 1) {
@@ -500,16 +505,27 @@ function shuffleChar(str, iterations) {
         strEven += str2[index];
       }
     }
-    return strEven + strOdd;
+    const answer = strEven + strOdd;
+    cashShuffle.set(str2, answer);
+    return answer;
   };
   let answer = str;
-  let effectiveIterations = iterations;
-  if (iterations === 10000) {
-    effectiveIterations = iterations - 9971 - 1;
-  }
+  const effectiveIterations = iterations;
+  let repeatEffect = 0;
   for (let index = 0; index < effectiveIterations; index += 1) {
     answer = shuffleCharOnce(answer);
+    if (index > 0 && str === answer) {
+      repeatEffect = iterations % (index + 1);
+      break;
+    }
   }
+  if (repeatEffect > 0) {
+    answer = str;
+    for (let index = 0; index < repeatEffect; index += 1) {
+      answer = shuffleCharOnce(answer);
+    }
+  }
+
   return answer;
 }
 
