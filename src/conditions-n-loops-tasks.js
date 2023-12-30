@@ -452,23 +452,42 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  const sortArray = arr;
-  const getIndexMinElement = (array, startPosition) => {
-    let minIndex = -1;
-    let minElement = Number.MAX_SAFE_INTEGER;
-    for (let index = startPosition; index < array.length; index += 1) {
-      const element = array[index];
-      if (element < minElement) {
-        minElement = element;
-        minIndex = index;
-      }
+  const quickSort = (array) => {
+    if (array.length <= 1) {
+      return array;
     }
-    return minIndex;
+    const pivotIndex = 0;
+    const pivot = array[pivotIndex];
+    const getElementsMoreLessPivot = (arr2, indexPivot = 0) => {
+      const pivot2 = arr2[indexPivot];
+      const lessPivot = [];
+      const morePivot = [];
+      for (let index = 0; index < arr2.length; index += 1) {
+        if (index !== indexPivot) {
+          const element = arr2[index];
+          if (element < pivot2) {
+            lessPivot[lessPivot.length] = element;
+          } else {
+            morePivot[morePivot.length] = element;
+          }
+        }
+      }
+      return { lessPivot, morePivot };
+    };
+
+    const objectLessMore = getElementsMoreLessPivot(array, pivotIndex);
+
+    return [
+      ...quickSort(objectLessMore.lessPivot),
+      pivot,
+      ...quickSort(objectLessMore.morePivot),
+    ];
   };
 
-  for (let i = 0; i < sortArray.length; i += 1) {
-    const iNew = getIndexMinElement(sortArray, i);
-    [sortArray[i], sortArray[iNew]] = [sortArray[iNew], sortArray[i]];
+  const pointerArr = arr;
+  const answer = quickSort(arr);
+  for (let index = 0; index < arr.length; index += 1) {
+    pointerArr[index] = answer[index];
   }
 }
 
